@@ -1,0 +1,87 @@
+/* =========================
+   GLOBAL THEME VARIABLES
+========================= */
+:root {
+    --bg-color: #0B0F19;
+    --text-color: #ffffff;
+    --card-bg: rgba(17, 24, 39, 0.6);
+    --border-color: rgba(255,255,255,0.1);
+    --nav-bg: rgba(17, 24, 39, 0.7);
+}
+
+/* LIGHT MODE */
+.light-mode {
+    --bg-color: #f9fafb;
+    --text-color: #111827;
+    --card-bg: #ffffff;
+    --border-color: #e5e7eb;
+    --nav-bg: rgba(255,255,255,0.8);
+}
+
+/* =========================
+   GLOBAL STYLES
+========================= */
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+}
+
+/* CARD */
+.card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    padding: 20px;
+    transition: all 0.3s ease;
+}
+
+/* TASK */
+.task {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 10px;
+    transition: all 0.3s ease;
+}
+
+/* NAVBAR */
+.navbar {
+    background: var(--nav-bg);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* INPUT */
+input {
+    background: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+/* BUTTON */
+button {
+    cursor: pointer;
+}
+
+/* ================= PAGE TRANSITION ================= */
+
+.page-transition {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: pageFadeIn .6s ease forwards;
+}
+
+@keyframes pageFadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Smooth fade when navigating */
+body.fade-out {
+    opacity: 0;
+    transition: opacity .25s ease;
+}
