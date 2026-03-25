@@ -1,0 +1,100 @@
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
+    password VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE users ADD goal VARCHAR(255) DEFAULT NULL;
+
+ALTER TABLE users ADD xp INT DEFAULT 0;
+
+ALTER TABLE users ADD COLUMN api_key TEXT;
+
+UPDATE users 
+SET api_key = 'YOUR_API_KEY'
+WHERE id = 1;
+
+ALTER TABLE users 
+ADD role ENUM('student','admin','super_admin') DEFAULT 'student',
+ADD admin_status ENUM('pending','approved') DEFAULT 'pending';
+
+UPDATE users 
+SET role='super_admin', admin_status='approved'
+WHERE email='rohitwagh@gmail.com';
+
+ALTER TABLE users 
+ADD status ENUM('active','blocked') DEFAULT 'active';
+
+CREATE TABLE goals (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100)
+);
+
+INSERT INTO goals (name) VALUES 
+('Frontend Developer'),
+('Backend Developer'),
+('AI Engineer');
+
+
+CREATE TABLE roadmaps (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    goal_id INT,
+    step_title VARCHAR(255)
+);
+
+INSERT INTO roadmaps (goal_id, step_title) VALUES
+(1, 'Learn HTML'),
+(1, 'Learn CSS'),
+(1, 'Learn JavaScript'),
+(1, 'Learn React'),
+
+(2, 'Learn PHP'),
+(2, 'Learn MySQL'),
+(2, 'Learn APIs'),
+
+(3, 'Learn Python'),
+(3, 'Learn Machine Learning'),
+(3, 'Build AI Projects');
+
+ALTER TABLE roadmaps ADD source VARCHAR(50) DEFAULT 'static';
+
+ALTER TABLE roadmaps ADD type VARCHAR(50);
+ALTER TABLE roadmaps ADD step_order INT;
+
+ALTER TABLE roadmaps 
+ADD COLUMN type VARCHAR(50),
+ADD COLUMN step_order INT;
+
+CREATE TABLE user_progress (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    roadmap_id INT,
+    status ENUM('completed') DEFAULT NULL
+);
+
+CREATE TABLE chat_messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    message TEXT,
+    response TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE user_goals (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    goal_id INT,
+    status ENUM('active','completed') DEFAULT 'active',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE contact_messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    phone VARCHAR(20),
+    message TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
