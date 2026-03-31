@@ -3,10 +3,14 @@ include("../includes/db.php");
 
 if (isset($_POST['register'])) {
 
-    $name = $_POST['name'];
+    $name = trim($_POST['name']);
     $email = $_POST['email'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
+
+    if (!preg_match("/^[A-Za-z\s]/", $name)) {
+        $error = "Name should contain only letters";
+    }
     // check existing
     $check = mysqli_query($conn, "SELECT * FROM users WHERE email='$email'");
 
@@ -200,11 +204,17 @@ VALUES ('$name','$email','$password','admin','pending','active')
         <?php if (isset($success)) echo "<div class='success'>$success</div>"; ?>
 
         <form method="POST">
-            <input type="text" name="name" placeholder="Name" required>
+            <input
+                type="text"
+                name="name"
+                placeholder="Full Name"
+                pattern="[A-Za-z\s]+"
+                title="Only letters allowed"
+                required>
             <input type="email" name="email" placeholder="Email" required>
 
             <div class="password-box">
-                <input type="password" name="password" id="password" placeholder="Password" required>
+                <input type="password" name="password" id="password" placeholder="Password" minlength="6" required>
                 <span class="toggle-pass" onclick="togglePassword()">👁️</span>
             </div>
 
@@ -216,6 +226,30 @@ VALUES ('$name','$email','$password','admin','pending','active')
         </div>
 
     </div>
+
+    <script>
+        document.querySelector("form").addEventListener("submit", function(e) {
+
+            const name = document.querySelector("input[name='name']").value;
+            const password = document.getElementById("password").value;
+
+            // Name validation
+            const nameRegex = /^[A-Za-z\s]/;
+            if (!nameRegex.test(name)) {
+                alert("Full name must contain only letters");
+                e.preventDefault();
+                return;
+            }
+
+            // Password length
+            if (password.length < 6) {
+                alert("Password must be at least 6 characters");
+                e.preventDefault();
+                return;
+            }
+
+        });
+    </script>
     <script>
         gsap.from(".super-admin-btn", {
             y: -30,
