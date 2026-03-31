@@ -3,12 +3,14 @@ include("includes/db.php");
 
 if (isset($_POST['register'])) {
 
-    $name = $_POST['name'];
+    $name = trim($_POST['name']);
     $email = $_POST['email'];
     $password = $_POST['password'];
     $confirm = $_POST['confirm_password'];
 
-    if ($password !== $confirm) {
+    if (!preg_match("/^[A-Za-z\s]/", $name)) {
+        $error = "Name must contain only letters";
+    } elseif ($password !== $confirm) {
         $error = "Passwords do not match!";
     } else {
         $hashed = password_hash($password, PASSWORD_DEFAULT);
@@ -181,11 +183,18 @@ if (isset($_POST['register'])) {
         } ?>
 
         <form method="POST">
-            <input type="text" name="name" placeholder="Full Name" required>
+            <input
+                type="text"
+                name="name"
+                placeholder="Full Name"
+                pattern="[A-Za-z\s]+"
+                title="Only letters allowed"
+                required>
+
             <input type="email" name="email" placeholder="Email" required>
 
             <div class="password-box">
-                <input type="password" name="password" id="password" placeholder="Password" required>
+                <input type="password" name="password" id="password" placeholder="Password" minlength="6" required>
                 <span class="toggle-pass" onclick="togglePassword()">👁️</span>
             </div>
 
@@ -202,6 +211,38 @@ if (isset($_POST['register'])) {
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+    <script>
+        document.querySelector("form").addEventListener("submit", function(e) {
+
+            const name = document.querySelector("input[name='name']").value;
+            const password = document.getElementById("password").value;
+            const confirm = document.getElementById("confirm_password").value;
+
+            // Name validation
+            const nameRegex = /^[A-Za-z\s]/;
+            if (!nameRegex.test(name)) {
+                alert("Full name must contain only letters");
+                e.preventDefault();
+                return;
+            }
+
+            // Password length
+            if (password.length < 6) {
+                alert("Password must be at least 6 characters");
+                e.preventDefault();
+                return;
+            }
+
+            // Match check
+            if (password !== confirm) {
+                alert("Passwords do not match");
+                e.preventDefault();
+                return;
+            }
+
+        });
+    </script>
 
     <script>
         gsap.from(".register-box", {
