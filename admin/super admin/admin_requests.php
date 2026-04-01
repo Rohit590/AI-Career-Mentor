@@ -12,6 +12,15 @@ if (isset($_GET['approve'])) {
     ");
 }
 
+if (isset($_GET['reject'])) {
+    $id = $_GET['reject'];
+
+    mysqli_query($conn, "
+        DELETE FROM users 
+        WHERE id='$id' AND role='admin'
+    ");
+}
+
 $requests = mysqli_query($conn, "
 SELECT * FROM users 
 WHERE role='admin' 
@@ -130,6 +139,10 @@ AND admin_status='pending'
             transform: translateX(-3px);
             box-shadow: 0 10px 25px rgba(245, 158, 11, .35);
         }
+
+        .reject {
+            background: linear-gradient(90deg, #374151, #111827);
+        }
     </style>
 
 </head>
@@ -163,9 +176,15 @@ AND admin_status='pending'
                         <span style="color:#9CA3AF;"><?php echo $row['email']; ?></span>
                     </div>
 
-                    <a class="btn" href="?approve=<?php echo $row['id']; ?>">
-                        Approve
-                    </a>
+                    <div style="display:flex; gap:10px;">
+                        <a class="btn" href="?approve=<?php echo $row['id']; ?>">
+                            Approve
+                        </a>
+
+                        <a class="btn reject" href="?reject=<?php echo $row['id']; ?>">
+                            Reject
+                        </a>
+                    </div>
 
                 </div>
 
