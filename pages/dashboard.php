@@ -1,6 +1,7 @@
 <?php
 include("../includes/auth.php");
 include("../includes/db.php");
+set_time_limit(120);
 $user_id = $_SESSION['user_id'];
 
 if (isset($_POST['search'])) {
@@ -25,7 +26,7 @@ if (isset($_POST['search'])) {
     mysqli_query($conn, "DELETE FROM roadmaps WHERE goal_id='$goal_id'");
 
     $response = file_get_contents(
-        "http://localhost/ai-career-platform/api/ai_handler.php",
+        "http://localhost/ai-career-mentor/api/ai_handler.php",
         false,
         stream_context_create([
             'http' => [
@@ -183,7 +184,7 @@ if (isset($_POST['complete_task'])) {
             z-index: -1;
         }
 
-        :root {
+        /* :root {
             --bg-color: #0B0F19;
             --text-color: white;
             --card-bg: rgba(17, 24, 39, 0.6);
@@ -195,7 +196,7 @@ if (isset($_POST['complete_task'])) {
             --text-color: black;
             --card-bg: white;
             --input-bg: #e5e7eb;
-        }
+        } */
 
         /* MAIN FIX */
         .main {
@@ -534,7 +535,7 @@ if (isset($_POST['complete_task'])) {
     <div id="loader">
         <div class="loader-box">
             <div class="spinner"></div>
-            <p>Generating your AI roadmap...</p>
+            <p>Generating your AI roadmap... This may take few seconds⌛</p>
         </div>
     </div>
 
@@ -704,7 +705,7 @@ if (isset($_POST['complete_task'])) {
             ";
 
                 // 🔥 AI Suggestion
-                $response = file_get_contents("http://localhost/ai-career-platform/api/suggest_career.php", false, stream_context_create([
+                $response = file_get_contents("http://localhost/ai-career-mentor/api/suggest_career.php", false, stream_context_create([
                     'http' => [
                         'method' => 'POST',
                         'header' => "Content-type: application/x-www-form-urlencoded",
@@ -846,15 +847,23 @@ if (isset($_POST['complete_task'])) {
         document.getElementById("loader").style.display = "flex";
     }
 </script>
-
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    window.addEventListener("load", function() {
         const loader = document.getElementById("loader");
         if (loader) {
             loader.style.display = "none";
         }
     });
 </script>
+
+<!-- <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const loader = document.getElementById("loader");
+        if (loader) {
+            loader.style.display = "none";
+        }
+    });
+</script> -->
 
 <script src="../assets/js/theme.js"></script>
 </body>
