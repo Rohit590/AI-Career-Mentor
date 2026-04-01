@@ -856,15 +856,6 @@ if (isset($_POST['complete_task'])) {
     });
 </script>
 
-<!-- <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const loader = document.getElementById("loader");
-        if (loader) {
-            loader.style.display = "none";
-        }
-    });
-</script> -->
-
 <script src="../assets/js/theme.js"></script>
 </body>
 
